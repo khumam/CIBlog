@@ -79,5 +79,34 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-4">
+            <div class="card card-user">
+                <div class="card-header">
+                    <h5 class="card-title">Tambahkan Writer</h5>
+                </div>
+                <div class="card-body">
+                    <form action="<?php echo base_url('dashboard/addwriter'); ?>" method="post">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" class="form-control" placeholder="Username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Nama Lengkap</label>
+                            <input type="text" name="fullname" class="form-control" placeholder="Nama Lengkap" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" class="form-control" placeholder="Password" required>
+                        </div>
+                        <div class="row">
+                            <div class="update ml-auto mr-auto">
+                                <button type="submit" class="btn btn-primary btn-round">Daftarkan Writer</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

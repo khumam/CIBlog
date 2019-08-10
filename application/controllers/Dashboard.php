@@ -295,4 +295,58 @@ class Dashboard extends CI_Controller
             }
         }
     }
+
+    public function addwriter()
+    {
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('username', 'Username', 'required|is_unique[akun.username]');
+        $this->form_validation->set_rules('fullname', 'Nama lengkap', 'required');
+        $this->form_validation->set_rules('password', 'Password', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->session->set_flashdata('gagal', 'Gagal menambah writer.');
+            redirect('dashboard/akunsettings');
+        } else {
+            $addwriter = $this->settings->addNewWriter();
+            if ($addwriter) {
+                $this->session->set_flashdata('sukses', 'Berhasil menambah writer');
+                $this->session->unset_userdata('username');
+                redirect('dashboard/akunsettings');
+            } else {
+                $this->session->set_flashdata('gagal', 'Gagal menambah writer');
+                redirect('dashboard/akunsettings');
+            }
+        }
+    }
+
+    // update 10 agustus 2019 20:02
+
+    public function akun()
+    {
+
+        if ($this->session->userdata('role') != 'admin') {
+            redirect('dashboard');
+        }
+
+        $data['judul'] = "Dashboard";
+        $data['akunInfo'] = $this->settings->getAkunInfo($this->session->userdata('username'));
+        $this->load->library('pagination');
+
+        $config['base_url'] = base_url() . 'dashboard/akun/';
+        $config['total_rows'] = $this->post->getCountAllPost();
+        $config['per_page'] = 1;
+
+        $data['start'] = $this->uri->segment('3');
+        $data['akuns'] = $this->stats->getListAkun($config['per_page'], $data['start']);
+
+        $this->pagination->initialize($config);
+
+
+        $this->load->view('newdb/dbheader', $data);
+        $this->load->view('newdb/dbwrapper', $data);
+        $this->load->view('newdb/dbnav', $data);
+        $this->load->view('newdb/akun/list', $data);
+        $this->load->view('newdb/dbfooter', $data);
+    }
 }

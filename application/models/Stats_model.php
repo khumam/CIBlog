@@ -94,4 +94,10 @@ class Stats_model extends CI_Model
 
         return $update ? true : false;
     }
+
+    public function getListAkun($limit, $start)
+    {
+        $this->db->order_by('id', 'DESC');
+        return $this->db->get('akun', $limit, $start)->result_array();
+    }
 }

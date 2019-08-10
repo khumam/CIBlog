@@ -100,4 +100,18 @@ class Settings_model extends CI_Model
         $send = $this->db->insert('kiriman', $dataInsert);
         return $send ? true : false;
     }
+
+    public function addNewWriter()
+    {
+        $dataInsert = [
+            'username' => $this->input->post('username'),
+            'fullname' => $this->input->post('fullname'),
+            'alias' => "Smart Writer",
+            'role' => "writer",
+            'password' => md5($this->input->post('password')),
+        ];
+
+        $send = $this->db->insert('akun', $dataInsert);
+        return $send ? true : false;
+    }
 }

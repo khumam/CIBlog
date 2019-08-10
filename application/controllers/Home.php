@@ -100,7 +100,7 @@ class Home extends CI_Controller
         $this->load->view('tmp/footer', $data);
     }
 
-    public function loginadmin()
+    public function login()
     {
         if ($this->session->userdata('username')) {
             redirect('dashboard');

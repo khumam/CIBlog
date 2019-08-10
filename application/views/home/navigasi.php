@@ -17,6 +17,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo base_url('home/contact'); ?>">Contact</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo base_url('home/login'); ?>">Login</a>
+                </li>
             </ul>
         </div>
     </div>

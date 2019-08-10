@@ -33,6 +33,12 @@
                     </a>
                 </li>
                 <?php if ($this->session->userdata('role') == 'admin') : ?>
+                    <li <?php if ($this->uri->segment('2') == 'akun') echo 'class="active"'; ?>>
+                        <a href="<?php echo base_url('dashboard/akun'); ?>">
+                            <i class="nc-icon nc-settings-gear-65"></i>
+                            <p>Akun</p>
+                        </a>
+                    </li>
                     <li <?php if ($this->uri->segment('2') == 'websettings') echo 'class="active"'; ?>>
                         <a href="<?php echo base_url('dashboard/websettings'); ?>">
                             <i class="nc-icon nc-settings"></i>

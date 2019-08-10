@@ -1,3 +1,31 @@
+    <footer class="footer footer-black  footer-white ">
+        <div class="container-fluid">
+            <div class="row">
+                <nav class="footer-nav">
+                    <ul>
+                        <li>
+                            <a href="https://www.literator.me" target="_blank">Literator</a>
+                        </li>
+                        <li>
+                            <a href="http://blog.literator.me/" target="_blank">Blog Literator</a>
+                        </li>
+                        <li>
+                            <a href="https://instagram.com/literator.me" target="_blank">Instagram</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="credits ml-auto">
+                    <span class="copyright">
+                        ©
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script>, made with <i class="fa fa-heart heart"></i> by Khoerul Umam as CEO Literator
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     </div>
     </div>
 

@@ -105,4 +105,48 @@ class Stats_model extends CI_Model
     {
         return $this->db->get('akun')->num_rows();
     }
+
+    // pesan
+
+    public function getListPesan($limit, $start)
+    {
+        $this->db->where('del', 0);
+        $this->db->order_by('id', 'DESC');
+        return $this->db->get('kiriman', $limit, $start)->result_array();
+    }
+
+    public function getCountAllPesan()
+    {
+        $this->db->where('del', 0);
+        return $this->db->get('kiriman')->num_rows();
+    }
+
+    public function hapusPesan($id)
+    {
+        $this->db->where('id', $id);
+        $hapus = $this->db->update('kiriman', ['del' => 1]);
+
+        return $hapus ? true : false;
+    }
+
+    public function detailPesan($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->get('kiriman')->row_array();
+    }
+
+    public function pesanDibaca($id)
+    {
+        $this->db->where('id', $id);
+        $update = $this->db->update('kiriman', ['baca' => 1]);
+
+        return $update ? true : false;
+    }
+
+    public function unreadPesan()
+    {
+        $this->db->where('baca', 0);
+        $this->db->where('del', 0);
+        return $this->db->get('kiriman')->num_rows();
+    }
 }

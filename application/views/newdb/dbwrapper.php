@@ -33,6 +33,21 @@
                     </a>
                 </li>
                 <?php if ($this->session->userdata('role') == 'admin') : ?>
+                    <li <?php if ($this->uri->segment('2') == 'pesan') echo 'class="active"'; ?>>
+                        <a href="<?php echo base_url('dashboard/pesan'); ?>">
+                            <div class="row d-flex align-items-center">
+                                <div class="col">
+                                    <i class="nc-icon nc-delivery-fast"></i>
+                                    <p>Pesan</p>
+                                </div>
+                                <?php if ($unreadmsg != 0) : ?>
+                                    <div class="col">
+                                        <p class="badge badge-danger float-right" style="font-size: 14px"><?php echo $unreadmsg; ?></p>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </a>
+                    </li>
                     <li <?php if ($this->uri->segment('2') == 'akun') echo 'class="active"'; ?>>
                         <a href="<?php echo base_url('dashboard/akun'); ?>">
                             <i class="nc-icon nc-settings-gear-65"></i>

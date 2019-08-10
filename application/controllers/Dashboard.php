@@ -27,6 +27,7 @@ class Dashboard extends CI_Controller
         $data['dataKunjungan'] = $this->stats->getAllDataLimit();
         $data['totalPenayangan'] = $this->stats->getCountPenayangan();
         $data['lastPost'] = $this->post->getLastPost();
+        $data['unreadmsg'] = $this->stats->unreadPesan();
 
         $this->load->view('newdb/dbheader', $data);
         $this->load->view('newdb/dbwrapper', $data);
@@ -56,6 +57,7 @@ class Dashboard extends CI_Controller
         $this->load->library('pagination');
         $data['webData'] = $this->settings->getWebData();
         $data['akunInfo'] = $this->settings->getAkunInfo($this->session->userdata('username'));
+        $data['unreadmsg'] = $this->stats->unreadPesan();
 
         $config['base_url'] = base_url() . 'dashboard/posts/';
         $config['total_rows'] = $this->post->getCountAllPost();
@@ -80,6 +82,7 @@ class Dashboard extends CI_Controller
         $data['categories'] = $this->post->getAllCategories();
         $data['webData'] = $this->settings->getWebData();
         $data['akunInfo'] = $this->settings->getAkunInfo($this->session->userdata('username'));
+        $data['unreadmsg'] = $this->stats->unreadPesan();
 
         $this->form_validation->set_rules('judul', 'Judul', 'required|is_unique[postingan.judul]');
         $this->form_validation->set_rules('subjudul', 'Sub Judul', 'required');
@@ -115,6 +118,7 @@ class Dashboard extends CI_Controller
         $data['post'] = $this->post->getPostById($id);
         $data['webData'] = $this->settings->getWebData();
         $data['akunInfo'] = $this->settings->getAkunInfo($this->session->userdata('username'));
+        $data['unreadmsg'] = $this->stats->unreadPesan();
 
         if ($data['post']['author'] != $this->session->userdata('id')) {
             redirect('dashboard/posts');
@@ -166,6 +170,7 @@ class Dashboard extends CI_Controller
         $data['post'] = $this->post->getPostById($id);
         $data['webData'] = $this->settings->getWebData();
         $data['akunInfo'] = $this->settings->getAkunInfo($this->session->userdata('username'));
+        $data['unreadmsg'] = $this->stats->unreadPesan();
 
         $this->load->view('newdb/dbheader', $data);
         $this->load->view('newdb/dbwrapper', $data);
@@ -212,6 +217,7 @@ class Dashboard extends CI_Controller
         $data['webData'] = $this->settings->getWebData();
         $data['akunInfo'] = $this->settings->getAkunInfo($this->session->userdata('username'));
         $this->load->library('form_validation');
+        $data['unreadmsg'] = $this->stats->unreadPesan();
 
         $this->form_validation->set_rules('namaweb', 'Nama web', 'required');
         $this->form_validation->set_rules('sloganweb', 'Slogan web', 'required');
@@ -243,6 +249,7 @@ class Dashboard extends CI_Controller
         $data['judul'] = "Dashboard";
         $data['akunInfo'] = $this->settings->getAkunInfo($this->session->userdata('username'));
         $data['webData'] = $this->settings->getWebData();
+        $data['unreadmsg'] = $this->stats->unreadPesan();
 
         $this->load->view('newdb/dbheader', $data);
         $this->load->view('newdb/dbwrapper', $data);
@@ -311,7 +318,6 @@ class Dashboard extends CI_Controller
             $addwriter = $this->settings->addNewWriter();
             if ($addwriter) {
                 $this->session->set_flashdata('sukses', 'Berhasil menambah writer');
-                $this->session->unset_userdata('username');
                 redirect('dashboard/akunsettings');
             } else {
                 $this->session->set_flashdata('gagal', 'Gagal menambah writer');
@@ -332,9 +338,10 @@ class Dashboard extends CI_Controller
         $data['judul'] = "Dashboard";
         $data['akunInfo'] = $this->settings->getAkunInfo($this->session->userdata('username'));
         $this->load->library('pagination');
+        $data['unreadmsg'] = $this->stats->unreadPesan();
 
         $config['base_url'] = base_url() . 'dashboard/akun/';
-        $config['total_rows'] = $this->post->getCountAllPost();
+        $config['total_rows'] = $this->stats->getCountAllAkun();
         $config['per_page'] = 1;
 
         $data['start'] = $this->uri->segment('3');
@@ -348,5 +355,66 @@ class Dashboard extends CI_Controller
         $this->load->view('newdb/dbnav', $data);
         $this->load->view('newdb/akun/list', $data);
         $this->load->view('newdb/dbfooter', $data);
+    }
+
+    // pesan 
+
+    public function pesan()
+    {
+
+        if ($this->session->userdata('role') != 'admin') {
+            redirect('dashboard');
+        }
+
+        $data['judul'] = "Dashboard";
+        $data['akunInfo'] = $this->settings->getAkunInfo($this->session->userdata('username'));
+        $this->load->library('pagination');
+
+        $config['base_url'] = base_url() . 'dashboard/pesan/';
+        $config['total_rows'] = $this->stats->getCountAllPesan();
+        $config['per_page'] = 1;
+
+        $data['start'] = $this->uri->segment('3');
+        $data['pesans'] = $this->stats->getListPesan($config['per_page'], $data['start']);
+        $data['unreadmsg'] = $this->stats->unreadPesan();
+
+        $this->pagination->initialize($config);
+
+
+        $this->load->view('newdb/dbheader', $data);
+        $this->load->view('newdb/dbwrapper', $data);
+        $this->load->view('newdb/dbnav', $data);
+        $this->load->view('newdb/pesan/index', $data);
+        $this->load->view('newdb/dbfooter', $data);
+    }
+
+    public function detailpesan($id)
+    {
+        if ($this->session->userdata('role') != 'admin') {
+            redirect('dashboard');
+        }
+
+        $data['judul'] = "Dashboard";
+        $data['pesan'] = $this->stats->detailPesan($id);
+        $this->stats->pesanDibaca($id);
+        $data['unreadmsg'] = $this->stats->unreadPesan();
+
+        $this->load->view('newdb/dbheader', $data);
+        $this->load->view('newdb/dbwrapper', $data);
+        $this->load->view('newdb/dbnav', $data);
+        $this->load->view('newdb/pesan/detail', $data);
+        $this->load->view('newdb/dbfooter', $data);
+    }
+
+    public function hapuspesan($id)
+    {
+        $hapus = $this->stats->hapusPesan($id);
+        if ($hapus) {
+            $this->session->set_flashdata('sukses', 'Berhasil menghapus pesan.');
+            redirect('dashboard/pesan');
+        } else {
+            $this->session->set_flashdata('gagal', 'Gagal menghapus pesan.');
+            redirect('dashboard/pesan');
+        }
     }
 }

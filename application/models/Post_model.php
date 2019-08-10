@@ -103,7 +103,7 @@ class Post_model extends CI_Model
             'tag' => $this->input->post('tag'),
             'uri' => urlencode(str_replace(' ', '-', $this->input->post('judul'))),
             'created' => date('d M Y , H:i:s'),
-            'author' => $this->session->userdata('fullname'),
+            'author' => $author,
             'image_uri' => $this->input->post('image'),
         ];
 

@@ -100,4 +100,9 @@ class Stats_model extends CI_Model
         $this->db->order_by('id', 'DESC');
         return $this->db->get('akun', $limit, $start)->result_array();
     }
+
+    public function getCountAllAkun()
+    {
+        return $this->db->get('akun')->num_rows();
+    }
 }
